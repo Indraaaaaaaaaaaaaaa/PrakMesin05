@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Form Prediksi | Prediksi Penyakit Jantung{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="col-lg-10 mx-auto">
+			<div class="mb-4">
+				<h2 class="section-title">Masukkan Data Anda</h2>
+				<p class="text-muted">Lengkapi formulir di bawah ini untuk memperoleh estimasi risiko penyakit jantung. Kolom bertanda <span class="text-danger">*</span> wajib diisi.</p>
+			</div>
+			<form id="formPrediksi" action="/predict" method="post" class="row g-3 card-soft p-4">
+			<div class="col-md-3">
+					<label class="form-label">Usia <span class="req">*</span></label>
+					<input type="number" name="Age" class="form-control" required min="0" placeholder="Contoh: 45">
+					<div class="help-text">Usia Anda saat ini (tahun). Contoh: 45</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Tekanan Darah Istirahat (mmHg) <span class="req">*</span></label>
+					<input type="number" name="RestingBP" class="form-control" required min="0" placeholder="Contoh: 130">
+					<div class="help-text">Tekanan darah saat istirahat. Contoh nilai normal: 120–130</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Kolesterol (mg/dL) <span class="req">*</span></label>
+					<input type="number" name="Cholesterol" class="form-control" required min="0" placeholder="Contoh: 200">
+					<div class="help-text">Kadar kolesterol total. Contoh: 200</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Denyut Jantung Maks (bpm) <span class="req">*</span></label>
+					<input type="number" name="MaxHR" class="form-control" required min="0" placeholder="Contoh: 170">
+					<div class="help-text">Denyut jantung maksimum saat aktivitas. Contoh: 170</div>
+			</div>
+
+			<div class="col-md-3">
+					<label class="form-label">Oldpeak <span class="req">*</span></label>
+					<input type="number" name="Oldpeak" step="0.1" class="form-control" required placeholder="Contoh: 1.0">
+					<div class="help-text">Depresi segmen ST (dibandingkan saat istirahat). Contoh: 1.0</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Gula Darah Puasa (FastingBS) <span class="req">*</span></label>
+				<select name="FastingBS" class="form-select" required>
+					<option value="0">0 (Tidak)</option>
+					<option value="1">1 (Ya)</option>
+				</select>
+					<div class="help-text">1 jika gula darah puasa ≥ 120 mg/dL, selain itu 0</div>
+			</div>
+
+				<div class="col-md-3">
+					<label class="form-label">Jenis Kelamin <span class="req">*</span></label>
+					<select name="Sex" class="form-select" required>
+					{% for v in categories.Sex %}
+					<option value="{{ v }}">{{ v }}</option>
+					{% endfor %}
+				</select>
+					<div class="help-text">Pilih sesuai jenis kelamin Anda</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Tipe Nyeri Dada <span class="req">*</span></label>
+				<select name="ChestPainType" class="form-select" required>
+					{% for v in categories.ChestPainType %}
+					<option value="{{ v }}">{{ v }}</option>
+					{% endfor %}
+				</select>
+					<div class="help-text">ATA = Atypical Angina, NAP = Non-Anginal, ASY = Asymptomatic</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">EKG Istirahat <span class="req">*</span></label>
+				<select name="RestingECG" class="form-select" required>
+					{% for v in categories.RestingECG %}
+					<option value="{{ v }}">{{ v }}</option>
+					{% endfor %}
+				</select>
+					<div class="help-text">Hasil pemeriksaan EKG saat istirahat</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Angina Saat Olahraga <span class="req">*</span></label>
+				<select name="ExerciseAngina" class="form-select" required>
+					{% for v in categories.ExerciseAngina %}
+					<option value="{{ v }}">{{ v }}</option>
+					{% endfor %}
+				</select>
+					<div class="help-text">Y = Ya, N = Tidak</div>
+			</div>
+			<div class="col-md-3">
+					<label class="form-label">Kemiringan ST (ST_Slope) <span class="req">*</span></label>
+				<select name="ST_Slope" class="form-select" required>
+					{% for v in categories.ST_Slope %}
+					<option value="{{ v }}">{{ v }}</option>
+					{% endfor %}
+				</select>
+					<div class="help-text">Up/Flat/Down menandakan tren segmen ST</div>
+			</div>
+
+				<div class="col-12 mt-3 d-flex gap-2 flex-wrap">
+					<button class="btn btn-brand" type="submit"><i class="bi bi-magic"></i> Hitung Prediksi</button>
+					<button class="btn btn-outline-primary" type="button" id="btnIsiContoh"><i class="bi bi-stars"></i> Isi Contoh</button>
+					<a href="/" class="btn btn-outline-secondary">Bersihkan</a>
+			</div>
+			</form>
+		</div>
+	</div>
+<script>
+document.getElementById('btnIsiContoh').addEventListener('click', function(){
+	const f = document.getElementById('formPrediksi');
+	f.Age.value = 45;
+	f.RestingBP.value = 130;
+	f.Cholesterol.value = 200;
+	f.MaxHR.value = 170;
+	f.Oldpeak.value = 1.0;
+	f.FastingBS.value = '0';
+	// Pilih opsi pertama untuk kategori sebagai contoh
+	f.Sex.selectedIndex = 0;
+	f.ChestPainType.selectedIndex = 0;
+	f.RestingECG.selectedIndex = 0;
+	f.ExerciseAngina.selectedIndex = 0;
+	f.ST_Slope.selectedIndex = 0;
+});
+</script>
+{% endblock %}
+
+

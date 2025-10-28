@@ -1,0 +1,51 @@
+:root{
+	--brand:#d6336c;
+	--brand-dark:#a61e4d;
+	--soft:#f8f9fa;
+	--text:#212529;
+	--card:#ffffff;
+}
+
+body{
+	background:
+		radial-gradient(1200px 600px at -10% -10%, #ffe3ec 0%, transparent 60%),
+		radial-gradient(1000px 500px at 110% 0%, #e3f2fd 0%, transparent 60%),
+		radial-gradient(800px 500px at 50% 120%, #e6fffa 0%, transparent 60%),
+		linear-gradient(180deg,#ffffff, #f7f7fb);
+	color:var(--text);
+}
+.card-soft{background:var(--card);border:1px solid #eee;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.brand{color:var(--brand)}
+.btn-brand{background:var(--brand);border-color:var(--brand);}
+.btn-brand:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+.help-text{font-size:.9rem;color:#6c757d}
+.section-title{font-weight:600;margin-bottom:.5rem}
+.risk-meter{height:10px;border-radius:6px;background:linear-gradient(90deg,#20c997,#ffc107,#dc3545)}
+
+label.form-label .req{color:#dc3545}
+
+/* Dark theme */
+[data-theme="dark"]{
+	--text:#e9ecef;
+	--card:#121418;
+	--brand:#ff4d6d;
+	--brand-dark:#c9184a;
+}
+[data-theme="dark"] body{
+	background:
+		radial-gradient(1200px 600px at -10% -10%, rgba(255,77,109,.15) 0%, transparent 60%),
+		radial-gradient(1000px 500px at 110% 0%, rgba(33,158,188,.15) 0%, transparent 60%),
+		radial-gradient(800px 500px at 50% 120%, rgba(16,185,129,.12) 0%, transparent 60%),
+		linear-gradient(180deg,#0b0e13, #0f1218);
+}
+[data-theme="dark"] .navbar{
+	background-color:#0f1218 !important;
+	border-color:#202632 !important;
+}
+[data-theme="dark"] .card-soft{
+	border-color:#202632;
+	box-shadow:0 10px 28px rgba(0,0,0,.45)
+}
+[data-theme="dark"] .text-muted{color:#adb5bd !important}
+
+
